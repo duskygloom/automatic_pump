@@ -126,14 +126,6 @@ void setup()
 	pinMode(t_top, INPUT_PULLUP);
 	pinMode(t_bottom, INPUT_PULLUP);
 	pinMode(r_bottom, INPUT_PULLUP);
-	// wifi
-	WiFi.begin(ssid, password);
-	Serial.println("Connecting...");
-	while (WiFi.status() != WL_CONNECTED)
-		delay(100);
-	Serial.println(String("Connected to ") + WiFi.SSID() + ".");
-	Serial.println(String("IP: ") + WiFi.localIP().toString());
-  server.begin();
   // lcd
   lcd.begin(16, 2);
   lcd.createChar(0, tank_empty);
@@ -144,6 +136,19 @@ void setup()
   lcd.createChar(5, pump_off_right);
   lcd.createChar(6, pump_on_left);
   lcd.createChar(7, pump_on_right);
+	// wifi
+	WiFi.begin(ssid, password);
+	Serial.println("Connecting...");
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print(ssid.substring(0, 16));
+  lcd.setCursor(0, 1);
+  lcd.print("Connecting...");
+	while (WiFi.status() != WL_CONNECTED)
+		delay(100);
+	Serial.println(String("Connected to ") + WiFi.SSID() + ".");
+	Serial.println(String("IP: ") + WiFi.localIP().toString());
+  server.begin();
   // displaying IP address
   lcd.clear();
   lcd.setCursor(0, 0);
