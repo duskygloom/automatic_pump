@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang='en' data-bs-theme='dark'>
+  <head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Smart pump</title>
+    <link rel='icon' type='image/x-icon' href='https://avatars.githubusercontent.com/t/6664638'>
+    <link rel='preconnect' href='https://fonts.googleapis.com'>
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin=''>
+    <link href='https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap' rel='stylesheet'>
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH' crossorigin='anonymous'>
+    <style>
+        * { font-family: 'Open Sans' 'Helvetica Neue' Helvetica sans-serif; }
+        nav.navbar { color: white; }
+        div#main-body { width: 100%; }
+    </style>
+  </head>
+  <body class='d-flex flex-column min-vh-100' onload='init_theme()'>
+    <nav class='navbar shadow bg-primary py-2 text-center'>
+      <div class='container-md'>
+        <div>
+          <img src='https://avatars.githubusercontent.com/t/6664638' alt='iot-club-icon' height='48px'>
+        </div>
+        <div class='mt-2 pb-0'>
+          <h4><b>Automatic Pump</b></h4>
+        </div>
+        <div>
+          <a class='btn btn-primary' onclick='toggle_theme()'>
+            <svg id='theme-toggle' xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-circle-half' viewBox='0 0 16 16'>
+              <path d='M8 15A7 7 0 1 0 8 1zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16'></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </nav>
+    <div id='main-body' class='container-md text-center'>
+      <div class='p-4 mt-4'>
+        <b class='card-title'>ESP-WROOM-32</b>
+      </div>
+    </div>
+    <div class='container-md'>
+      <div class='p-4 mt-4'>
+        <div class='row'>
+          <d class='col'><b>Uptime</b></d>
+          <d class='col'><span id='uptime'>1063</span> s</d>
+        </div>
+        <div class='row'>
+          <d class='col'><b>Free heap</b></d>
+          <d class='col'><span id='free_heap'>226</span> KB</d>
+        </div>
+        <hr>
+        <div class='row'>
+          <d class='col'><b>Cores</b></d>
+          <d class='col'><span id='num_cores'>2</span></d>
+        </div>
+        <div class='row'>
+          <d class='col'><b>Chip model</b></d>
+          <d class='col'><span id='chip_model'>ESP32-D0WD-V3</span></d>
+        </div>
+        <div class='row'>
+          <d class='col'><b>SDK version</b></d>
+          <d class='col'><span id='sdk_version'>v4.4.6-dirty</span></d>
+        </div>
+        <div class='row'>
+          <d class='col'><b>Connectivity</b></d>
+          <d class='col'><span id='connectivity'>WiFi-BT-BLE</span></d>
+        </div>
+        <div class='row'>
+          <d class='col'><b>CPU frequency</b></d>
+          <d class='col'><span id='cpu_frequency'>240</span> MHz</d>
+        </div>
+        <hr>
+        <div class='row'>
+          <d class='col'><b>Free sketch space</b></d>
+          <d class='col'><span id='free_sketch_space'>1280</span> KB</d>
+        </div>
+        <div class='row'>
+          <d class='col'><b>Sketch MD5 checksum</b></d>
+          <d class='col'><span id='sketch_md5'>1383a4e8f0d5ef99da89a48e1e121bdd</span></d>
+        </div>
+      </div>
+    </div>
+    <footer class='text-center pb-2 mt-auto'>
+      VBDCSS IoT Club @ 2024
+    </footer>
+  <script>
+    function refresh_data() {
+      fetch('/pump/dev/status')
+      .then(response => response.json())
+      .then(data => {
+        for (const key in data)
+          document.getElementById(key).innerHTML = data[key];
+      })
+    }
+    setInterval(refresh_data, 1000)
+  </script>
+    <script>
+      function init_theme() {
+        theme = localStorage.getItem('theme')
+        if (theme) document.documentElement.dataset.bsTheme = theme
+      }
+      function toggle_theme() {
+        dataset = document.documentElement.dataset
+        dataset.bsTheme = dataset.bsTheme == 'dark' ? 'light' : 'dark'
+        localStorage.setItem('theme', dataset.bsTheme)
+      }
+    </script>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js' integrity='sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz' crossorigin='anonymous'></script>
+  </body>
+</html>
